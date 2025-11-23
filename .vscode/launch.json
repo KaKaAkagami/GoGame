@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "GoGame Debug",
+            "type": "cppdbg",
+            "request": "launch",
+
+            // chương trình chạy
+            "program": "${workspaceFolder}/GoGame.exe",
+
+            // không cho VS Code chạy từ src/
+            "cwd": "${workspaceFolder}",
+
+            "args": [],
+            "stopAtEntry": false,
+
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+
+            "externalConsole": false,
+
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
