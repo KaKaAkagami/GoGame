@@ -114,4 +114,5 @@ g++ -std=c++17 -Iinclude src/main.cpp src/App.cpp src/ScreenManager.cpp src/widg
 ### Run
 ./GoGame.exe
 
-
+Demo video:
+https://drive.google.com/file/d/1mbQ4Ace68Z3dHjK_28rAxmB2zIoa-zhr/view?usp=sharing
