@@ -38,24 +38,21 @@ private:
     std::vector<Button> boardButtons;
 
     // Game mode buttons
-    Button btn2P;      // 2 Players Mode
-    Button btnEasy;    // Easy AI
-    Button btnMedium;  // Medium AI
-    Button btnHard;    // Hard AI
+    Button btn2P;// 2 Players Mode
+    Button btnEasy;// Easy AI
+    Button btnMedium;// Medium AI
+    Button btnHard;// Hard AI
 
-    // Start game
-    Button btnStart;   // Start the game
+    Button btnStart;// Start the game
 
     // Return
     Button btnReturn;
 
     bool layoutDone;
 
-    // --- Selection state ---
-    int selectedBoard;  // -1 = none, 0..2
-    int selectedMode;   // -1 = none, 0..3
+    int selectedBoard;  
+    int selectedMode;   
 
-    // Cached positions (top-left) để vẽ highlight (vì Button không có getPosition)
-    std::vector<sf::Vector2f> boardBtnPositions;      // size = 3
-    std::array<sf::Vector2f, 4> modeBtnPositions;     // 0:2P,1:Easy,2:Medium,3:Hard
+    std::vector<sf::Vector2f> boardBtnPositions;// size = 3
+    std::array<sf::Vector2f, 4> modeBtnPositions;// 0:2P,1:Easy,2:Medium,3:Hard
 };

@@ -10,7 +10,7 @@ namespace
     // Căn origin text vào giữa
     void centerOrigin(sf::Text& t)
     {
-        sf::FloatRect b = t.getLocalBounds(); // SFML 3: Rect có position + size
+        sf::FloatRect b = t.getLocalBounds(); 
         const float cx = b.position.x + b.size.x * 0.5f;
         const float cy = b.position.y + b.size.y * 0.5f;
         t.setOrigin(sf::Vector2f{cx, cy});
@@ -37,7 +37,7 @@ SettingsScreen::SettingsScreen(NavigateFn onNavigate,
     }
 
     // Style title
-    title.setFillColor(sf::Color::Black);        // màu đen
+    title.setFillColor(sf::Color::Black);// màu đen
 
     // Background
     if (!bgTexture.loadFromFile(BG_IMAGE_PATH))
@@ -64,16 +64,14 @@ SettingsScreen::SettingsScreen(NavigateFn onNavigate,
             navigate("Menu");
     });
 
-    // ---- Gán callback cho từng option ----
     for (std::size_t i = 0; i < options.size(); ++i)
     {
-        // Nút cuối cùng = "Background music"
         if (i == options.size() - 1)
         {
             options[i].setOnClick([this]()
             {
                 if (toggleMusic)
-                    toggleMusic();   // bật / tắt nhạc
+                    toggleMusic();// bật / tắt nhạc
             });
         }
         else
@@ -92,7 +90,6 @@ void SettingsScreen::layout(const sf::Vector2u& winSize)
     const float winW = static_cast<float>(winSize.x);
     const float winH = static_cast<float>(winSize.y);
 
-    // ---- Background full màn ----
     if (bgSprite)
     {
         const sf::Vector2u texSize = bgTexture.getSize();
@@ -105,13 +102,11 @@ void SettingsScreen::layout(const sf::Vector2u& winSize)
         bgSprite->setPosition(sf::Vector2f{0.f, 0.f});
     }
 
-    // ---- Title đặt thấp hơn ----
     centerOrigin(title);
-    const float titleY = winH * 0.28f;   // thấp hơn để gần nút Board color
+    const float titleY = winH * 0.28f;   
     title.setPosition(sf::Vector2f{winW * 0.5f, titleY});
 
-    // ---- 4 option buttons (đều cùng kích thước với Background music) ----
-    const float startY = winH * 0.38f;  // gần hơn với title
+    const float startY = winH * 0.38f;  
     const float gapY   = 70.f;
     const float cx     = winW * 0.5f;
 
@@ -134,7 +129,6 @@ void SettingsScreen::layout(const sf::Vector2u& winSize)
         }
     }
 
-    // ---- Return button: rộng + cao hơn ----
     const float margin   = 16.f;
     const float paddingX = 48.f;    // rộng hơn
     const float paddingY = 18.f;    // cao hơn
@@ -168,7 +162,6 @@ void SettingsScreen::handleEvent(const sf::Event& e)
 
 void SettingsScreen::update(float /*dt*/)
 {
-    // no animation
 }
 
 void SettingsScreen::draw(sf::RenderWindow& window)

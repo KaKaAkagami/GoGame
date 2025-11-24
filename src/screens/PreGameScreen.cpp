@@ -168,7 +168,7 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
     // Label 1
     labelBoard.setPosition(sf::Vector2f{leftX, topY});
 
-    // ===== 3 nút board size trên 1 hàng =====
+    //3 nút board size trên 1 hàng
     const float centerY = topY + 90.f;
 
     Button& baseBtn = boardButtons[2];
@@ -188,11 +188,11 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
         boardBtnPositions[i] = sf::Vector2f{x, centerY};
     }
 
-    // ===== Label 2 =====
+    //Label 2
     float label2Y = centerY + baseH + 80.f;
     labelMode.setPosition(sf::Vector2f{leftX, label2Y});
 
-    // ===== 4 nút game mode =====
+    //4 nút game mode
     float maxTextW = btn2P.textWidth();
     maxTextW = std::max(maxTextW, btnEasy.textWidth());
     maxTextW = std::max(maxTextW, btnMedium.textWidth());
@@ -221,7 +221,7 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
     btnMedium.setPosition(modeBtnPositions[2]);
     btnHard.setPosition(modeBtnPositions[3]);
 
-    // ===== Nút Start =====
+    //Nút Start
     const float startBtnY = gmY + gmH + 70.f;
 
     btnStart.setSize(sf::Vector2f{gmW, gmH});
@@ -230,7 +230,7 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
         startBtnY
     });
 
-    // ===== Nút Return =====
+    //Nút Return
     const float margin   = 16.f;
     const float paddingX = 48.f;
     const float paddingY = 18.f;

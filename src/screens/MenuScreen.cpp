@@ -54,18 +54,15 @@ MenuScreen::MenuScreen(NavigateFn onNavigate)
     // 1: Continue game
     // 2: Settings
     // 3: Exit
-    buttons.emplace_back(fontUI, "PLAY", 28U);              // 0
-    buttons.emplace_back(fontUI, "Continue game", 28U);     // 1
-    buttons.emplace_back(fontUI, "Settings", 28U);          // 2
-    buttons.emplace_back(fontUI, "Exit", 28U);              // 3
+    buttons.emplace_back(fontUI, "PLAY", 28U);// 0
+    buttons.emplace_back(fontUI, "Continue game", 28U);// 1
+    buttons.emplace_back(fontUI, "Settings", 28U);// 2
+    buttons.emplace_back(fontUI, "Exit", 28U);// 3
 
-    // Callbacks
-    // PLAY -> PreGame (chọn board/mode)
     buttons[0].setOnClick([this]() {
         if (navigate) navigate("PreGame");
     });
 
-    // Continue game -> vào GameScreen (load save nếu có, nếu không thì default)
     buttons[1].setOnClick([this]() {
         if (navigate) navigate("Game");
     });
@@ -104,7 +101,7 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
     centerOrigin(madeBy);
     madeBy.setPosition(sf::Vector2f{winW * 0.5f, winH * 0.20f + 40.f});
 
-    // --- 3 nút trung tâm: PLAY, Continue, Settings --- //
+    //3 nút trung tâm: PLAY, Continue, Settings 
     const float startY = winH * 0.40f;
     const float gapY   = 70.f;
 
@@ -115,7 +112,7 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
     for (int i = 0; i < 3; ++i)
     {
         maxTextW = std::max(maxTextW, buttons[i].textWidth());
-        baseH    = buttons[i].height(); // cùng font size nên giống nhau
+        baseH    = buttons[i].height(); //cùng font size nên giống nhau
     }
 
     float baseW = maxTextW + 40.f;
@@ -130,7 +127,7 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
         buttons[i].setPosition(sf::Vector2f{x, y});
     }
 
-    // --- nút Exit bên phải dưới --- //
+    //nút Exit bên phải dưới 
     {
         Button& e = buttons[3];
         e.setSize(sf::Vector2f{

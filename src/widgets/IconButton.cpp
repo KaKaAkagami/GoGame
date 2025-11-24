@@ -2,7 +2,6 @@
 
 void IconButton::setTexture(const sf::Texture& texture)
 {
-    // SFML 3: Sprite phải được tạo với texture
     sprite = std::make_unique<sf::Sprite>(texture);
 }
 

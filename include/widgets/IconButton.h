@@ -14,5 +14,5 @@ public:
     void draw(sf::RenderWindow& window) const;
 
 private:
-    std::unique_ptr<sf::Sprite> sprite; // nullptr khi chưa có texture
+    std::unique_ptr<sf::Sprite> sprite; 
 };

@@ -4,17 +4,16 @@
 #include <iostream>
 
 #include "screens/MenuScreen.h"
-#include "screens/BlankScreen.h"
 #include "screens/SettingsScreen.h"
 #include "screens/PreGameScreen.h"
 #include "screens/GameScreen.h"
 
 namespace
 {
-    // Giống với PreGameScreen
+    // giống PreGameScreen
     constexpr const char* PREGAME_CONFIG_PATH = "pregame_tmp.txt";
 
-    // Đường dẫn nhạc nền
+    // đường dẫn nhạc nền
     constexpr const char* BG_MUSIC_PATH = "assets/sfx/bg_music.ogg";
 }
 
@@ -28,7 +27,7 @@ App::App()
     // SFML 3: VideoMode từ Vector2u
     window.create(sf::VideoMode({1280u, 720u}), "Go Game");
 
-    // ---- Nhạc nền ----
+    // ===== Load background music =====
     if (!bgMusic.openFromFile(BG_MUSIC_PATH))
     {
         std::cerr << "[App] Failed to load bg music: "
@@ -36,33 +35,14 @@ App::App()
     }
     else
     {
-        bgMusic.setLooping(true);   // phát lặp vô hạn
-        bgMusic.setVolume(40.f);    // 0–100, tuỳ bạn chỉnh
-        bgMusic.play();             // phát ngay khi mở game
+        bgMusic.setLooping(true);// phát lặp vô hạn
+        bgMusic.setVolume(40.f);    
         musicEnabled = true;
+        bgMusic.play();
     }
 
-    // ==== Toggle nhạc cho SettingsScreen ====
-    auto toggleMusic = [this]()
-    {
-        if (musicEnabled)
-        {
-            // Đang bật -> TẮT
-            bgMusic.stop();
-            musicEnabled = false;
-        }
-        else
-        {
-            // Đang tắt -> BẬT LẠI TỪ ĐẦU
-            bgMusic.stop();                          // đảm bảo dừng hẳn
-            bgMusic.setPlayingOffset(sf::Time::Zero); // tua về 0
-            bgMusic.play();                          // phát lại
-            musicEnabled = true;
-        }
-    };
-
-    // ==== navigate callback cho tất cả Screen ====
-    auto navigate = [this, toggleMusic](const std::string& name) mutable
+    //navigate callback cho tất cả Screen
+    auto navigate = [this](const std::string& name)
     {
         if (name == "Quit")
         {
@@ -78,9 +58,7 @@ App::App()
 
             std::ifstream in(PREGAME_CONFIG_PATH);
             if (in)
-            {
                 in >> boardSize >> mode;
-            }
 
             if (boardSize != 9 && boardSize != 13 && boardSize != 19)
                 boardSize = 9;
@@ -88,38 +66,36 @@ App::App()
             if (gameScreen)
             {
                 gameScreen->setBoardSize(boardSize);
-                gameScreen->setCurrentPlayer(0); // luôn để Black đi trước
+                gameScreen->setCurrentPlayer(0); // Black đi trước
             }
         }
 
         screens.switchTo(name);
     };
 
-    // ==== Đăng ký các màn hình ====
+
+    // Menu
     screens.addScreen("Menu",
         std::make_unique<MenuScreen>(navigate));
 
+    // Pre-game (chọn board size + mode)
     screens.addScreen("PreGame",
         std::make_unique<PreGameScreen>(navigate));
 
-    // Gameplay screen mới – lưu lại con trỏ
+    // Gameplay screen – lưu lại con trỏ gameScreen
     {
         auto gs = std::make_unique<GameScreen>(navigate);
         gameScreen = gs.get();
         screens.addScreen("Game", std::move(gs));
     }
 
-    // Settings: truyền thêm toggleMusic
+    // Settings – truyền callback toggleMusic
     screens.addScreen("Settings",
-        std::make_unique<SettingsScreen>(navigate, toggleMusic));
+        std::make_unique<SettingsScreen>(
+            navigate,
+            [this]() { toggleMusic(); }
+        ));
 
-    // Các màn hình khác
-    screens.addScreen("2P",
-        std::make_unique<BlankScreen>("2 Players Mode - coming soon"));
-    screens.addScreen("PracticeAI",
-        std::make_unique<BlankScreen>("Practice with AI - coming soon"));
-    screens.addScreen("Challenge",
-        std::make_unique<BlankScreen>("Challenge - coming soon"));
 
     screens.switchTo("Menu");
 }
@@ -138,6 +114,29 @@ void App::handleGlobalEvent(const sf::Event& e)
         if (key->scancode == sf::Keyboard::Scancode::Escape)
             window.close();
     }
+}
+
+// ===== Helpers cho nhạc =====
+void App::startMusic()
+{
+    if (bgMusic.getStatus() != sf::SoundSource::Status::Playing)
+        bgMusic.play();
+    musicEnabled = true;
+}
+
+void App::stopMusic()
+{
+    if (bgMusic.getStatus() != sf::SoundSource::Status::Stopped)
+        bgMusic.stop();
+    musicEnabled = false;
+}
+
+void App::toggleMusic()
+{
+    if (musicEnabled)
+        stopMusic();
+    else
+        startMusic();
 }
 
 void App::run()

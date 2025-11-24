@@ -13,7 +13,7 @@ class SettingsScreen : public Screen
 {
 public:
     using NavigateFn    = std::function<void(const std::string&)>;
-    using ToggleMusicFn = std::function<void()>;   // 🆕 callback bật/tắt nhạc
+    using ToggleMusicFn = std::function<void()>;   
 
     explicit SettingsScreen(NavigateFn onNavigate,
                             ToggleMusicFn onToggleMusic);
@@ -26,18 +26,18 @@ public:
     void layout(const sf::Vector2u& winSize);
 
 private:
-    NavigateFn    navigate;
-    ToggleMusicFn toggleMusic;   // 🆕 lưu callback
+    NavigateFn navigate;
+    ToggleMusicFn toggleMusic;   
 
     // Background
     sf::Texture                         bgTexture;
-    std::unique_ptr<sf::Sprite>         bgSprite;   // dùng unique_ptr giống IconButton
+    std::unique_ptr<sf::Sprite>         bgSprite;  
 
     // UI
-    sf::Font            font;
-    sf::Text            title;
-    Button              btnReturn;
-    std::vector<Button> options;
+    sf::Font font;
+    sf::Text title;
+    Button btnReturn;
+    std::vector<Button>options;
 
     bool layoutDone;
 };

@@ -20,21 +20,20 @@ public:
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
 
-    // gọi lại khi đổi size cửa sổ
     void layout(const sf::Vector2u& winSize);
 
 private:
     NavigateFn navigate;
 
     // Background
-    sf::Texture                      bgTexture;
-    std::unique_ptr<sf::Sprite>      bgSprite;   // SFML 3: dùng unique_ptr giống IconButton
+    sf::Texture bgTexture;
+    std::unique_ptr<sf::Sprite>bgSprite;   
 
     // UI
-    sf::Font       fontUI;
-    sf::Font       fontTitle;
-    sf::Text       title;
-    sf::Text       madeBy;
+    sf::Font fontUI;
+    sf::Font fontTitle;
+    sf::Text title;
+    sf::Text madeBy;
     std::vector<Button> buttons;
 
     bool layoutDone;

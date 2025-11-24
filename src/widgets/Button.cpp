@@ -4,7 +4,7 @@
 // ctor
 Button::Button(const sf::Font& font, const std::string& text, unsigned int size)
     : background{}
-    , label(font, text, size)   // SFML 3
+    , label(font, text, size)   
     , onClick(nullptr)
 {
     // màu chữ trắng

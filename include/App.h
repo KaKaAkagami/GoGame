@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>      // 🆕 để dùng sf::Music
+#include <SFML/Audio.hpp>
 #include <string>
 
 #include "ScreenManager.h"
@@ -18,11 +18,16 @@ private:
     sf::RenderWindow window;
     ScreenManager    screens;
 
-    GameScreen*      gameScreen; // trỏ tới màn Game
+    GameScreen*      gameScreen;   // trỏ tới màn Game
 
-    // 🆕 Nhạc nền & trạng thái
-    sf::Music bgMusic;
-    bool      musicEnabled;
+    // Nhạc nền
+    sf::Music        bgMusic;
+    bool             musicEnabled;
 
     void handleGlobalEvent(const sf::Event& e);
+
+    // helpers cho nhạc
+    void startMusic();
+    void stopMusic();
+    void toggleMusic();
 };
