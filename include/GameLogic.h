@@ -17,14 +17,14 @@ public:
         White = 2
     };
 
-    // ======= phase của ván =======
+    // phase của ván
     enum class Phase {
         Playing,    // đang chơi bình thường
         MarkDead,   // đang đánh dấu quân chết
         Finished    // đã chấm điểm xong
     };
 
-    // ===== Nhật luật (Japanese scoring) =====
+    // Japanese scoring
     struct JapaneseScore
     {
         int    blackTerritory = 0;
@@ -55,7 +55,7 @@ public:
 
     
     
-        // Komi (điểm cộng cho trắng), ví dụ 6.5 hoặc 7.5
+        // Komi (điểm cộng cho trắng), 6.5 
     void   setKomi(double k) { m_komi = k; }
     double getKomi() const   { return m_komi; }
 
@@ -75,7 +75,7 @@ public:
     // Reset ván mới với kích thước 9/13/19
     void reset(int boardSize);
 
-    // ====== Getter cơ bản (dùng cho UI / GameScreen) ======
+    // Getter dùng cho UI / GameScreen
     int getBoardSize() const { return m_boardSize; }
     int getCurrentPlayer() const { return m_currentPlayer; } // 0 = Black, 1 = White
     void setCurrentPlayer(int p)   //de dung trong App.cpp
@@ -93,14 +93,14 @@ public:
     bool isMarkingDead() const { return m_phase == Phase::MarkDead; }
     bool isPlaying()    const { return m_phase == Phase::Playing; }
 
-    // ====== Hành động chính ======
+    // hành động chính 
     // Đặt quân tại (row, col) theo lượt hiện tại, áp dụng bắt quân, ko, tự sát
     MoveResult playMove(int row, int col);
 
     // Pass lượt (có xử lý kết thúc ván nếu 2 lần pass liên tiếp)
     MoveResult pass();
 
-    // Save / load (format giống GameScreen cũ)
+    // Save / load 
     bool saveToFile(const std::string& path) const;
     bool loadFromFile(const std::string& path);
     int getLibertiesAt(int row, int col) const;
@@ -138,10 +138,10 @@ private:
     Phase             m_phase = Phase::Playing;
     std::vector<bool> m_deadMarks;   // true = quân đang được mark chết
 
-    // ===== Helper nội bộ =====
+    // Helper 
     void ensureBoardArray(); // đảm bảo m_boardCells có size = n*n
 
-    // BFS tìm group & liberties trên một "board" cho trước (dùng được cho mô phỏng)
+    // BFS tìm group & liberties trên một "board" cho trước 
     void getGroupAndLiberties(
         int row, int col, int color,
         std::vector<int>& outGroup,

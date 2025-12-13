@@ -1,7 +1,7 @@
 #include "widgets/Button.h"
 #include <iostream>
 
-// ctor
+
 Button::Button(const sf::Font& font, const std::string& text, unsigned int size)
     : background{}
     , label(font, text, size)   
@@ -27,7 +27,7 @@ Button::Button(const sf::Font& font, const std::string& text, unsigned int size)
 
     background.setSize(bgSize);
 
-    // mặc định ở (0,0), nhưng vẫn căn giữa text trong ô
+    
     background.setPosition(sf::Vector2f{0.f, 0.f});
     updateLabelTransform();
 }

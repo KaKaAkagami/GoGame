@@ -1,4 +1,4 @@
-// src/screens/PreGameScreen.cpp
+
 #include "screens/PreGameScreen.h"
 #include <iostream>
 #include <algorithm>

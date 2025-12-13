@@ -29,7 +29,7 @@ App::App()
     // SFML 3: VideoMode từ Vector2u
     window.create(sf::VideoMode({1280u, 720u}), "Go Game");
 
-    // ===== Load background music =====
+    //  Load background music 
     if (!bgMusic.openFromFile(BG_MUSIC_PATH))
     {
         std::cerr << "[App] Failed to load bg music: "
@@ -121,7 +121,7 @@ void App::handleGlobalEvent(const sf::Event& e)
     }
 }
 
-// ===== Helpers cho nhạc =====
+// cho nhạc 
 void App::startMusic()
 {
     if (bgMusic.getStatus() != sf::SoundSource::Status::Playing)

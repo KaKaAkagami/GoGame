@@ -65,7 +65,7 @@ void GoGame::ensureBoardArray()
         m_boardCells.assign(expected, 0);
 }
 
-// ====== BFS group & liberties ======
+// BFS group & liberties
 void GoGame::getGroupAndLiberties(
     int row, int col, int color,
     std::vector<int>& outGroup,
@@ -140,7 +140,7 @@ void GoGame::getGroupAndLiberties(
     }
 }
 
-// ====== Đặt quân ======
+// Đặt quân 
 GoGame::MoveResult GoGame::playMove(int row, int col)
 {   
     
@@ -275,7 +275,7 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
     return result;
 }
 
-// ===== PASS =====
+//  PASS 
 GoGame::MoveResult GoGame::pass()
 {
     MoveResult result{true, "", 0};
@@ -315,7 +315,7 @@ GoGame::MoveResult GoGame::pass()
     return result;
 }
 
-// ===== SAVE / LOAD =====
+//  SAVE / LOAD 
 bool GoGame::saveToFile(const std::string& path) const
 {
     std::ofstream out(path);
@@ -385,7 +385,7 @@ bool GoGame::loadFromFile(const std::string& path)
     return true;
 }
 
-// ===== LEGAL MOVES (cho AI) =====
+// LEGAL MOVES (cho AI) 
 std::vector<std::pair<int,int>> GoGame::getLegalMoves() const
 {
     std::vector<std::pair<int,int>> moves;
@@ -450,7 +450,7 @@ GoGame::JapaneseScore GoGame::computeJapaneseScoreImpl(
 
             int v = board[(std::size_t)idx];
 
-            // Chỉ flood-fill trên vùng trống
+            // flood-fill trên vùng trống
             if (v != Empty)
             {
                 visited[(std::size_t)idx] = true;
@@ -676,7 +676,7 @@ int GoGame::countGroupLiberties(int row, int col) const
 
 
 
-// ===== MARK DEAD GROUP =====
+//  MARK DEAD GROUP 
 GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
 {
     MarkDeadResult res{false, "", 0};
@@ -685,7 +685,7 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
     if (n != 9 && n != 13 && n != 19)
         n = 9;
 
-    // (khuyến nghị) chỉ cho mark sau khi ván đã kết thúc
+    // chỉ cho mark sau khi ván đã kết thúc
     if (m_phase != Phase::MarkDead)
     {
         res.message = "You can only mark dead stones in mark-dead phase.";
@@ -743,7 +743,7 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
     else
         m_blackCaptured += removed; // đen ăn trắng
 
-    // Cập nhật prev board cho đồng bộ (ko dùng ko nữa nhưng cho chắc)
+    // Cập nhật prev board cho đồng bộ 
     m_prevBoardCells = m_boardCells;
     m_hasPrevBoard   = true;
 

@@ -21,9 +21,9 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
     if (legalMoves.empty())
         return {-1, -1};   // pass
 
-    // =========================
-    // EASY: 1-ply greedy, KHÔNG random
-    // =========================
+    
+    // EASY: 1-ply greedy
+    
     if (m_diff == AIDifficulty::Easy) {
         double bestScore = -1e18;
         std::pair<int,int> bestMove = legalMoves[0];
@@ -35,8 +35,8 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
 
             double s = evaluatePosition(child, aiColor);
 
-            // BONUS: ăn càng nhiều quân càng ngon
-            s += res.captured * 2.5;    // chỉnh 2–4 tuỳ cậu
+            // ăn càng nhiều quân càng ngon
+            s += res.captured * 2.5;    
 
             // PHẠT: nước chơi xong mà group còn 1 liberty và không ăn quân
             int libs = child.countGroupLiberties(r, c);
@@ -53,9 +53,9 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
         return bestMove;
     }
 
-    // =========================
+    
     // MEDIUM & HARD: đánh giá + minimax
-    // =========================
+    
     struct Candidate {
         int r, c;
         double eval;
@@ -64,7 +64,7 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
     std::vector<Candidate> candidates;
     candidates.reserve(legalMoves.size());
 
-    // 1) Đánh giá nhanh từng nước
+    // Đánh giá nhanh từng nước
     for (auto [r, c] : legalMoves) {
         GoGame child = game;
         auto res = child.playMove(r, c);
@@ -72,7 +72,7 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
 
         double e = evaluatePosition(child, aiColor);
 
-        // cùng tweak như trên
+        // cùng như trên
         e += res.captured * 2.5;
         int libs = child.countGroupLiberties(r, c);
         if (libs == 1 && res.captured == 0)
@@ -85,13 +85,13 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
     if (candidates.empty())
         return {-1, -1};
 
-    // 2) Sắp xếp theo eval giảm dần
+    // Sắp xếp theo giảm dần
     std::sort(candidates.begin(), candidates.end(),
               [](const Candidate& a, const Candidate& b) {
                   return a.eval > b.eval;
               });
 
-    // 3) Chọn K và depth theo độ khó + kích thước bàn
+    // Chọn K và depth theo độ khó + kích thước bàn
     int bs = game.getBoardSize();
     int K;
     int depth;
@@ -126,7 +126,7 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
     else
         K = (int)candidates.size();  // đề phòng ít hơn K
 
-    // 5) Minimax / Alpha-Beta trên các ứng viên
+    // Minimax / Alpha-Beta trên các ứng viên
     double bestScore = -1e18;
     std::pair<int,int> bestMove = {candidates[0].r, candidates[0].c};
 
@@ -154,14 +154,14 @@ std::pair<int,int> GoAI::chooseMove(const GoGame& game, int aiColor)
     return bestMove;
 }
 
-// ==== ĐÁNH GIÁ VỊ TRÍ (có bonus ô giữa cho mọi mode) ====
+// ĐÁNH GIÁ VỊ TRÍ (có bonus ô giữa)
 
 double GoAI::evaluatePosition(const GoGame& game, int aiColor) const
 {
-    // 1) Dùng JapaneseScore để lấy territory + captures
+    // Dùng JapaneseScore để lấy territory + captures
     GoGame::JapaneseScore js = game.computeJapaneseScore();
 
-    // điểm cho mỗi bên theo Nhật luật (không cần phân biệt Black/White ở đây)
+    // điểm cho mỗi bên theo Nhật luật 
     double blackScore = js.blackTerritory + js.blackCaptures;
     double whiteScore = js.whiteTerritory + js.whiteCaptures + js.komi;
 
@@ -171,10 +171,10 @@ double GoAI::evaluatePosition(const GoGame& game, int aiColor) const
     else
         baseDiff = whiteScore - blackScore;
 
-    // scale nhẹ cho đỡ “quá nhạy”
-    double score = baseDiff * 0.6;  // có thể chỉnh 0.5–1.0 tuỳ cảm giác
+    
+    double score = baseDiff * 0.6;  
 
-    // 2) Thêm ưu tiên vị trí: gần trung tâm thì tốt hơn
+    //Thêm ưu tiên vị trí gần trung tâm thì tốt hơn
     int n = game.getBoardSize();
     int center = n / 2;
 
@@ -192,7 +192,7 @@ double GoAI::evaluatePosition(const GoGame& game, int aiColor) const
         }
     }
 
-    // 3) BONUS mạnh riêng cho đúng ô giữa (tất cả mode đều có)
+    //BONUS mạnh riêng cho đúng ô giữa 
     int cv = game.getCell(center, center);
     if (cv == aiColor)
         score += 1.0;
@@ -203,7 +203,7 @@ double GoAI::evaluatePosition(const GoGame& game, int aiColor) const
 }
 
 
-// ==== MINIMAX THƯỜNG ====
+//  MINIMAX THƯỜNG 
 
 double GoAI::minimax(GoGame state, int depth, bool maximizingPlayer,
                      int aiColor)
@@ -235,7 +235,7 @@ double GoAI::minimax(GoGame state, int depth, bool maximizingPlayer,
     return bestVal;
 }
 
-// ==== MINIMAX + ALPHA-BETA (Hard) ====
+//  MINIMAX + ALPHA-BETA (Hard) 
 
 double GoAI::minimaxAlphaBeta(GoGame state, int depth, bool maximizingPlayer,
                               int aiColor, double alpha, double beta)

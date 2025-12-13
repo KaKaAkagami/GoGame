@@ -1,4 +1,4 @@
-// src/screens/SettingsScreen.cpp
+
 #include "screens/SettingsScreen.h"
 #include <iostream>
 
@@ -76,10 +76,10 @@ SettingsScreen::SettingsScreen(NavigateFn onNavigate,
         }
         else
         {
-            // Các nút khác tạm thời để placeholder
+            
             options[i].setOnClick([]()
             {
-                // TODO: sẽ xử lý sau (board color, stone design, sfx)
+                
             });
         }
     }
@@ -160,7 +160,7 @@ void SettingsScreen::handleEvent(const sf::Event& e)
     btnReturn.handleEvent(e);
 }
 
-void SettingsScreen::update(float /*dt*/)
+void SettingsScreen::update(float )
 {
 }
 

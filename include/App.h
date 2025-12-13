@@ -8,7 +8,7 @@
 
 #include "ScreenManager.h"
 
-class GameScreen; // forward declare
+class GameScreen; // declare
 
 class App
 {

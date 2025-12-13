@@ -1,4 +1,4 @@
-// src/screens/GameScreen.cpp
+
 #include "screens/GameScreen.h"
 
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <cstdio>   // std::remove
 #include <cmath>
-#include <queue>    // cho BFS group
+#include <queue>    // cho BFS 
 
 namespace
 {
@@ -208,7 +208,7 @@ GameScreen::GameScreen(NavigateFn onNavigate)
 
     btnUndo.setOnClick([this]()
     {
-        // Nếu AI đang nghĩ thì đừng cho undo
+        // Nếu AI đang nghĩ thì ko cho undo
         if (pendingAIMove) return;
 
         bool changed = false;
@@ -290,7 +290,7 @@ void GameScreen::setBoardSize(int size)
     {
         game.reset(size); 
         
-        layoutDone      = false; // buộc layout lại để vẽ board mới
+        layoutDone      = false; // buộc layout vẽ board mới
 
        
         statusText.setString("");
@@ -394,7 +394,7 @@ void GameScreen::layout(const sf::Vector2u& winSize)
             std::cout << "[GameScreen] Loaded save from " << SAVE_PATH << "\n";
         }
 
-        // Continue game: treat as 2 players (hoặc sau này lưu thêm info vsAI riêng)
+        // Continue game: 
         vsAI = false;
     }
 
@@ -425,7 +425,7 @@ void GameScreen::layout(const sf::Vector2u& winSize)
     // Status text (Saved! / Illegal move / Ko rule / end game)
     statusText.setPosition(sf::Vector2f{40.f, winH * 0.44f});
 
-        // --- Buttons ---
+        //  Buttons 
     const float bottomMargin = 40.f;
     const float gapX         = 20.f;
     const float gapY         = 16.f;   // khoảng cách giữa 2 hàng nút
@@ -678,7 +678,7 @@ void GameScreen::handleBoardClick(int mouseX, int mouseY)
     if (i < 0 || i >= n || j < 0 || j >= n) 
         return;
 
-    // chỉ cho click gần giao điểm (không ở quá giữa ô)
+    // chỉ cho click gần giao điểm 
     float gx = static_cast<float>(j) * cellSize;
     float gy = static_cast<float>(i) * cellSize;
     float dx = std::abs(localX - gx);
@@ -699,7 +699,7 @@ void GameScreen::handleBoardClick(int mouseX, int mouseY)
     updateTurnText();
     updateTurnPanel();
     updateScoreTexts();
-    statusText.setString(""); // hoặc hiện "OK" nếu bạn thích
+    statusText.setString(""); 
     statusTimer = 0.f;
 
         // Sau khi human đi xong:
@@ -754,7 +754,7 @@ void GameScreen::handleEvent(const sf::Event& e)
 
 void GameScreen::update(float dt)
 {
-    // 1) Cập nhật statusText (trừ khi game over / mark-dead)
+    // Cập nhật statusText (trừ khi game over / mark-dead)
     if (!game.isMarkingDead() && !game.isGameOver())
     {
         if (statusTimer > 0.f)
@@ -768,7 +768,7 @@ void GameScreen::update(float dt)
         }
     }
 
-    // 2) Xử lý AI move nếu đang chờ
+    //  Xử lý AI move nếu đang chờ
 if (pendingAIMove && !game.isGameOver() && !game.isMarkingDead())
 {
     aiThinkTimer -= dt;
@@ -813,7 +813,7 @@ void GameScreen::updateScorePreview()
     GoGame::JapaneseScore s = game.computeJapaneseScoreWithDead();
 
     auto toStr1 = [](double x) {
-        // in 1 số thập phân cho gọn
+        // in 1 số thập phân 
         char buf[32];
         std::snprintf(buf, sizeof(buf), "%.1f", x);
         return std::string(buf);
@@ -831,7 +831,7 @@ void GameScreen::updateScorePreview()
     text += "Neutral (dame): " + std::to_string(s.neutral);
 
     statusText.setString(text);
-    statusTimer = 0.f;   // không auto xoá trong mode này
+    statusTimer = 0.f;   // không auto xoá 
 }
 
 void GameScreen::draw(sf::RenderWindow& window)
@@ -843,7 +843,7 @@ void GameScreen::draw(sf::RenderWindow& window)
     if (bgSprite)
         window.draw(*bgSprite);
 
-    // HUD (bên trái) — KHÔNG vẽ titleText nữa
+    // HUD 
     window.draw(boardSizeText);
     window.draw(turnText);
     window.draw(blackScoreText);
@@ -856,7 +856,7 @@ void GameScreen::draw(sf::RenderWindow& window)
     window.draw(turnPanelRect);
     window.draw(turnPanelText);
 
-    // --- Vẽ bàn cờ ---
+    //  Vẽ bàn cờ 
     window.draw(boardRect);
 
     int nPoints = game.getBoardSize();
