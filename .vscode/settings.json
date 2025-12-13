@@ -1,5 +1,5 @@
 {
-  // Liên kết phần mở rộng .h và các thư viện chuẩn với C++
+ 
   "files.associations": {
     "any": "cpp",
     "array": "cpp",
@@ -102,11 +102,11 @@
     "*.h": "cpp"
   },
 
-  // --- Thiết lập mã hóa file ---
+ 
   "files.encoding": "utf8",
   "files.eol": "\n",
 
-  // --- Cấu hình trình biên dịch MSYS2 UCRT64 ---
+ 
   "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
   "C_Cpp.default.intelliSenseMode": "windows-gcc-x64",
   "C_Cpp.default.cppStandard": "c++17",
@@ -115,14 +115,14 @@
     "C:/msys64/ucrt64/include"
   ],
 
-  // --- Tắt toàn bộ code analysis / clang-tidy (nguồn gốc lỗi đỏ) ---
+  
   "C_Cpp.codeAnalysis.enabled": false,
   "C_Cpp.codeAnalysis.clangTidy.enabled": false,
 
-  // --- Tùy chọn hiển thị lỗi gạch đỏ ---
-  "C_Cpp.errorSquiggles": "enabled", // hoặc "disabled" nếu muốn tắt tạm thời
 
-  // --- Engine IntelliSense dùng Microsoft (không phải clangd) ---
+  "C_Cpp.errorSquiggles": "enabled", 
+
+  
   "C_Cpp.intelliSenseEngine": "default",
   "C_Cpp.intelliSenseEngineFallback": "disabled"
 }

@@ -24,7 +24,7 @@ public:
 
     void layout(const sf::Vector2u& winSize);
 
-    // Được App gọi trước khi switch sang "Game"
+    
     void setBoardSize(int size);// 9, 13, 19
     void setCurrentPlayer(int player); // 0 = Black, 1 = White
 
@@ -78,7 +78,7 @@ private:
     bool  layoutDone;
     float statusTimer;// để hiển thị status tạm thời (Saved!, Illegal move,...)
 
-        // Logic thuần cờ vây
+    // Logic thuần cờ vây
     GoGame game;
     bool vsAI = false;
     int aiColor = 1; // giả sử 1 = White
