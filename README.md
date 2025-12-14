@@ -119,14 +119,14 @@ Go/
 ### Ingame
 - Click intersections to place stones
 - Pass (skip a turn), if both players passed, change to mark-dead mode to discuss what stones are dead and remove them + change the point
-- Finish and score. After mark-dead mode, finish the game and calculate score.
+- Finish and Score. After mark-dead mode, finish the game and calculate score.
 - Save game (storing progress)
 - Back to menu
 
 > Note: If you want to reset the game even after saving it, just press the ‘Back to Menu’ button to return to the main menu, and then select ‘PLAY’ instead of ‘Continue Game’. This will start a brand-new level for you.
 
-two consecutive passes end the game.
-Winner = player with more captured stones
+two consecutive passes to mark-dead mode and press 'Finish and Score' to end the game.
+Winner = who has the highest score
 
 ## 4. Build & Run Instruction 
 
