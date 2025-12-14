@@ -170,6 +170,8 @@ private:
     std::vector<GameState> m_history;
     int m_historyIndex = -1;
 
+    
+
     void saveState();           
     void restoreState(int idx); 
 };

@@ -31,6 +31,9 @@ void GoGame::reset(int boardSize)
    
     m_history.clear();
     m_historyIndex = -1;
+
+    
+
     saveState();
 
     ensureBoardArray();
@@ -391,6 +394,15 @@ bool GoGame::loadFromFile(const std::string& path)
     
     m_prevBoardCells    = m_boardCells;
     m_hasPrevBoard      = true;
+
+
+    m_history.clear();
+    m_historyIndex = -1;
+    saveState();          
+
+   
+    
+    
 
     return true;
 }
@@ -792,6 +804,8 @@ bool GoGame::canUndo() const
 {
     return (m_historyIndex > 0);
 }
+
+
 
 bool GoGame::canRedo() const
 {

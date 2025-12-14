@@ -291,7 +291,10 @@ GameScreen::GameScreen(NavigateFn onNavigate)
 
     btnUndo.setOnClick([this]()
     {
+        
         if (pendingAIMove) return;
+        if (!game.isPlaying() && !game.isMarkingDead())
+            return;
 
         bool changed = false;
 
