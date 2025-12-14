@@ -1,3 +1,4 @@
+
 #include "widgets/IconButton.h"
 
 void IconButton::setTexture(const sf::Texture& texture)
