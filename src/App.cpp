@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 #include "screens/MenuScreen.h"
 #include "screens/SettingsScreen.h"
@@ -10,13 +11,9 @@
 
 namespace
 {
-    constexpr const char* SAVE_PATH = "savegame.txt";
-
-    // giống PreGameScreen
-    constexpr const char* PREGAME_CONFIG_PATH = "pregame_tmp.txt";
-
-    // đường dẫn nhạc nền
-    constexpr const char* BG_MUSIC_PATH = "assets/sfx/bg_music.ogg";
+    constexpr const char* SAVE_PATH            = "savegame.txt";
+    constexpr const char* PREGAME_CONFIG_PATH  = "pregame_tmp.txt";
+    constexpr const char* BG_MUSIC_PATH        = "assets/sfx/bg_music.ogg";
 }
 
 App::App()
@@ -25,25 +22,23 @@ App::App()
     , gameScreen(nullptr)
     , bgMusic()
     , musicEnabled(false)
+    , musicVolume(40.f)
 {
-    // SFML 3: VideoMode từ Vector2u
     window.create(sf::VideoMode({1280u, 720u}), "Go Game");
 
-    //  Load background music 
+    
     if (!bgMusic.openFromFile(BG_MUSIC_PATH))
     {
-        std::cerr << "[App] Failed to load bg music: "
-                  << BG_MUSIC_PATH << "\n";
+        std::cerr << "[App] Failed to load bg music: " << BG_MUSIC_PATH << "\n";
     }
     else
     {
-        bgMusic.setLooping(true);// phát lặp vô hạn
-        bgMusic.setVolume(40.f);    
+        bgMusic.setLooping(true);
+        bgMusic.setVolume(musicVolume);
         musicEnabled = true;
         bgMusic.play();
     }
 
-    //navigate callback cho tất cả Screen
     auto navigate = [this](const std::string& name) mutable
     {
         if (name == "Quit")
@@ -52,7 +47,6 @@ App::App()
             return;
         }
 
-        // Trước khi vào Game, đọc lựa chọn từ PreGame
         if (name == "Game")
         {
             int boardSize = 9;
@@ -60,8 +54,10 @@ App::App()
 
             std::ifstream in(PREGAME_CONFIG_PATH);
             if (in)
+            {
                 in >> boardSize >> mode;
                 in.close();
+            }
 
             if (boardSize != 9 && boardSize != 13 && boardSize != 19)
                 boardSize = 9;
@@ -69,38 +65,34 @@ App::App()
             if (gameScreen)
             {
                 gameScreen->setBoardSize(boardSize);
-                gameScreen->setCurrentPlayer(0); // Black đi trước
+                gameScreen->setCurrentPlayer(0); 
             }
-            // std::remove(PREGAME_CONFIG_PATH);
-            // std::remove(SAVE_PATH);
         }
 
         screens.switchTo(name);
     };
 
+    
+    screens.addScreen("Menu", std::make_unique<MenuScreen>(navigate));
 
-    // Menu
-    screens.addScreen("Menu",
-        std::make_unique<MenuScreen>(navigate));
+    
+    screens.addScreen("PreGame", std::make_unique<PreGameScreen>(navigate));
 
-    // Pre-game (chọn board size + mode)
-    screens.addScreen("PreGame",
-        std::make_unique<PreGameScreen>(navigate));
-
-    // Gameplay screen – lưu lại con trỏ gameScreen
+    
     {
         auto gs = std::make_unique<GameScreen>(navigate);
         gameScreen = gs.get();
         screens.addScreen("Game", std::move(gs));
     }
 
-    // Settings – truyền callback toggleMusic
+    
     screens.addScreen("Settings",
         std::make_unique<SettingsScreen>(
             navigate,
-            [this]() { toggleMusic(); }
-        ));
-
+            [this](float v) { setMusicVolume(v); },
+            [this]() -> float { return getMusicVolume(); }
+        )
+    );
 
     screens.switchTo("Menu");
 }
@@ -121,7 +113,6 @@ void App::handleGlobalEvent(const sf::Event& e)
     }
 }
 
-// cho nhạc 
 void App::startMusic()
 {
     if (bgMusic.getStatus() != sf::SoundSource::Status::Playing)
@@ -138,10 +129,21 @@ void App::stopMusic()
 
 void App::toggleMusic()
 {
-    if (musicEnabled)
-        stopMusic();
-    else
-        startMusic();
+    if (musicEnabled) stopMusic();
+    else startMusic();
+}
+
+void App::setMusicVolume(float v)
+{
+    musicVolume = std::clamp(v, 0.f, 100.f);
+    bgMusic.setVolume(musicVolume);
+
+    
+}
+
+float App::getMusicVolume() const
+{
+    return musicVolume;
 }
 
 void App::run()

@@ -15,14 +15,13 @@ public:
     void setDifficulty(AIDifficulty diff);
     AIDifficulty getDifficulty() const;
 
-    // Trả về (row, col) AI muốn đánh
-    // Nếu không có nước hợp lệ (pass), trả (-1, -1)
+    
     std::pair<int,int> chooseMove(const GoGame& game, int aiPlayerColor);
 
 private:
     AIDifficulty m_diff;
 
-    // Các hàm hỗ trợ 
+   
     double evaluatePosition(const GoGame& game, int aiColor) const;
 
     double minimax(GoGame state, int depth, bool maximizingPlayer,

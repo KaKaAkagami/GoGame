@@ -15,7 +15,7 @@ namespace
         const float cy = b.position.y + b.size.y * 0.5f;
         t.setOrigin(sf::Vector2f{cx, cy});
     }
-} // namespace
+} 
 
 MenuScreen::MenuScreen(NavigateFn onNavigate)
     : navigate(std::move(onNavigate))
@@ -28,7 +28,7 @@ MenuScreen::MenuScreen(NavigateFn onNavigate)
     , buttons()
     , layoutDone(false)
 {
-    // Font
+   
     if (!fontUI.openFromFile(FONT_UI_PATH) ||
         !fontTitle.openFromFile(FONT_TITLE_PATH))
     {
@@ -38,7 +38,7 @@ MenuScreen::MenuScreen(NavigateFn onNavigate)
     title.setFillColor(sf::Color::Black);
     madeBy.setFillColor(sf::Color(0x3B, 0x2F, 0x2F));
 
-    // Background
+  
     if (!bgTexture.loadFromFile(BG_IMAGE_PATH))
     {
         std::cerr << "[MenuScreen] Failed to load background\n";
@@ -49,15 +49,13 @@ MenuScreen::MenuScreen(NavigateFn onNavigate)
         bgSprite = std::make_unique<sf::Sprite>(bgTexture);
     }
 
-    // 3 nút trung tâm + 1 nút Exit ở góc:
-    // 0: PLAY
-    // 1: Continue game
-    // 2: Settings
-    // 3: Exit
-    buttons.emplace_back(fontUI, "PLAY", 28U);// 0
-    buttons.emplace_back(fontUI, "Continue game", 28U);// 1
-    buttons.emplace_back(fontUI, "Settings", 28U);// 2
-    buttons.emplace_back(fontUI, "Exit", 28U);// 3
+    
+    
+
+    buttons.emplace_back(fontUI, "PLAY", 28U);
+    buttons.emplace_back(fontUI, "Continue game", 28U);
+    buttons.emplace_back(fontUI, "Settings", 28U);
+    buttons.emplace_back(fontUI, "Exit", 28U);
 
     buttons[0].setOnClick([this]() {
         if (navigate) navigate("PreGame");
@@ -81,7 +79,7 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
     const float winW = static_cast<float>(winSize.x);
     const float winH = static_cast<float>(winSize.y);
 
-    // Background full màn
+    
     if (bgSprite)
     {
         const sf::Vector2u tex = bgTexture.getSize();
@@ -94,25 +92,25 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
         bgSprite->setPosition(sf::Vector2f{0.f, 0.f});
     }
 
-    // Title
+   
     centerOrigin(title);
     title.setPosition(sf::Vector2f{winW * 0.5f, winH * 0.20f});
 
     centerOrigin(madeBy);
     madeBy.setPosition(sf::Vector2f{winW * 0.5f, winH * 0.20f + 40.f});
 
-    //3 nút trung tâm: PLAY, Continue, Settings 
+    
     const float startY = winH * 0.40f;
     const float gapY   = 70.f;
 
-    // Lấy width lớn nhất để 3 nút đều nhau
+   
     float maxTextW = 0.f;
     float baseH    = 0.f;
 
     for (int i = 0; i < 3; ++i)
     {
         maxTextW = std::max(maxTextW, buttons[i].textWidth());
-        baseH    = buttons[i].height(); //cùng font size nên giống nhau
+        baseH    = buttons[i].height(); 
     }
 
     float baseW = maxTextW + 40.f;
@@ -127,7 +125,7 @@ void MenuScreen::layout(const sf::Vector2u& winSize)
         buttons[i].setPosition(sf::Vector2f{x, y});
     }
 
-    //nút Exit bên phải dưới 
+    
     {
         Button& e = buttons[3];
         e.setSize(sf::Vector2f{

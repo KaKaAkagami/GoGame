@@ -1,10 +1,10 @@
 #include "GameLogic.h"
 
 #include <fstream>
-#include <algorithm> // std::equal
-#include <queue>     // BFS
-#include <cmath>     // std::round
-#include <iostream>  // optional debug
+#include <algorithm> 
+#include <queue>     
+#include <cmath>     
+#include <iostream>  
 
 GoGame::GoGame(int boardSize)
 {
@@ -17,7 +17,7 @@ void GoGame::reset(int boardSize)
         boardSize = 9;
 
     m_boardSize        = boardSize;
-    m_currentPlayer    = 0;  // Black đi trước
+    m_currentPlayer    = 0;  
     m_blackCaptured    = 0;
     m_whiteCaptured    = 0;
     m_gameOver         = false;
@@ -27,14 +27,14 @@ void GoGame::reset(int boardSize)
     int n = m_boardSize;
     m_boardCells.assign((std::size_t)(n * n), 0);
 
-    //clear & lưu state ban đầu (bàn trống)
+   
     m_history.clear();
     m_historyIndex = -1;
     saveState();
 
     ensureBoardArray();
 
-    // Ko
+    
     m_prevBoardCells = m_boardCells;
     m_hasPrevBoard   = true;
 
@@ -65,7 +65,7 @@ void GoGame::ensureBoardArray()
         m_boardCells.assign(expected, 0);
 }
 
-// BFS group & liberties
+
 void GoGame::getGroupAndLiberties(
     int row, int col, int color,
     std::vector<int>& outGroup,
@@ -140,7 +140,7 @@ void GoGame::getGroupAndLiberties(
     }
 }
 
-// Đặt quân 
+
 GoGame::MoveResult GoGame::playMove(int row, int col)
 {   
     
@@ -181,7 +181,7 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
         return result;
     }
 
-    // Lưu bàn cũ để: check ko + revert nếu illegal
+    
     std::vector<int> oldBoard = m_boardCells;
 
     int color    = (m_currentPlayer == 0 ? Black : White);
@@ -189,7 +189,7 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
 
     m_boardCells[(std::size_t)idx] = color;
 
-    // Bắt quân lân cận
+  
     int capturedThisMove = 0;
     const int dr[4] = {-1, 1, 0, 0};
     const int dc[4] = {0, 0, -1, 1};
@@ -220,7 +220,7 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
         }
     }
 
-    // Cấm tự sát (nếu không bắt quân nào và group của mình hết liberties)
+    
     {
         std::vector<int> myGroup;
         int myLibs = 0;
@@ -234,7 +234,7 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
         }
     }
 
-    // Luật ko: cấm bàn cờ trùng đúng bàn trước đó
+ 
     if (m_hasPrevBoard && m_prevBoardCells.size() == m_boardCells.size())
     {
         bool same = std::equal(
@@ -249,7 +249,8 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
         }
     }
 
-    // Cập nhật điểm bắt quân
+
+    
     if (capturedThisMove > 0)
     {
         if (color == Black)
@@ -258,15 +259,18 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
             m_whiteCaptured += capturedThisMove;
     }
 
-    // Lưu bàn cũ làm "prev" cho lần check ko tiếp theo
+  
+    
     m_prevBoardCells    = oldBoard;
     m_hasPrevBoard      = true;
     m_consecutivePasses = 0;
 
-    // Đổi lượt
+
+    
     m_currentPlayer = 1 - m_currentPlayer;
 
-    // Lưu state sau khi đi xong nước này
+    
+    
     saveState();
 
     result.ok       = true;
@@ -275,7 +279,8 @@ GoGame::MoveResult GoGame::playMove(int row, int col)
     return result;
 }
 
-//  PASS 
+
+
 GoGame::MoveResult GoGame::pass()
 {
     MoveResult result{true, "", 0};
@@ -292,7 +297,8 @@ GoGame::MoveResult GoGame::pass()
 
     if (m_consecutivePasses >= 2)
     {
-        // chuyển sang mark-dead mode
+        
+        
         m_consecutivePasses = 0;
         m_phase = Phase::MarkDead;
 
@@ -309,13 +315,15 @@ GoGame::MoveResult GoGame::pass()
         m_currentPlayer = 1 - m_currentPlayer;
     }
 
-    // Sau khi pass xong → lưu state
+   
+    
     saveState();
 
     return result;
 }
 
-//  SAVE / LOAD 
+
+
 bool GoGame::saveToFile(const std::string& path) const
 {
     std::ofstream out(path);
@@ -378,14 +386,16 @@ bool GoGame::loadFromFile(const std::string& path)
             m_boardCells[(std::size_t)i] = 0;
     }
 
-    // Ko state
+
+    
     m_prevBoardCells    = m_boardCells;
     m_hasPrevBoard      = true;
 
     return true;
 }
 
-// LEGAL MOVES (cho AI) 
+
+
 std::vector<std::pair<int,int>> GoGame::getLegalMoves() const
 {
     std::vector<std::pair<int,int>> moves;
@@ -397,7 +407,8 @@ std::vector<std::pair<int,int>> GoGame::getLegalMoves() const
     if (n != 9 && n != 13 && n != 19)
         n = 9;
 
-    // Duyệt toàn bộ ô trống, thử playMove trên bản copy
+    
+    
     for (int r = 0; r < n; ++r)
     {
         for (int c = 0; c < n; ++c)
@@ -417,7 +428,8 @@ std::vector<std::pair<int,int>> GoGame::getLegalMoves() const
 
     return moves;
 }
-// Nhật luật điểm
+
+
 GoGame::JapaneseScore GoGame::computeJapaneseScoreImpl(
     const std::vector<int>& board,
     int extraBlackCap,
@@ -450,14 +462,16 @@ GoGame::JapaneseScore GoGame::computeJapaneseScoreImpl(
 
             int v = board[(std::size_t)idx];
 
-            // flood-fill trên vùng trống
+            
+            
             if (v != Empty)
             {
                 visited[(std::size_t)idx] = true;
                 continue;
             }
 
-            // BFS một vùng trống
+           
+            
             bool adjBlack = false;
             bool adjWhite = false;
             std::vector<int> region;
@@ -508,22 +522,26 @@ GoGame::JapaneseScore GoGame::computeJapaneseScoreImpl(
 
             if (adjBlack && !adjWhite)
             {
-                // lãnh thổ đen
+              
+                
                 score.blackTerritory += regionSize;
             }
             else if (adjWhite && !adjBlack)
             {
-                // lãnh thổ trắng
+               
+                
                 score.whiteTerritory += regionSize;
             }
             else
             {
-                // chạm cả 2 bên hoặc không chạm ai → dame/neutral
+                
+                
                 score.neutral += regionSize;
             }
         }
     }
-    // tổng điểm theo Nhật luật (ko tính dame)
+    
+    
     score.blackTotal = score.blackTerritory + score.blackCaptures;
     score.whiteTotal = score.whiteTerritory + score.whiteCaptures + score.komi;
 
@@ -568,7 +586,8 @@ GoGame::JapaneseScore GoGame::computeJapaneseScoreWithDead() const
 
 GoGame::JapaneseScore GoGame::finalizeScore()
 {
-    // Tạo bản sao bàn cờ, áp dụng các ô deadMarks
+    
+    
     std::vector<int> tmp = m_boardCells;
     int extraBlackCap = 0;
     int extraWhiteCap = 0;
@@ -582,20 +601,24 @@ GoGame::JapaneseScore GoGame::finalizeScore()
         int v = tmp[(std::size_t)idx];
         if (v == Black)
         {
-            ++extraWhiteCap;                  // quân đen chết → trắng ăn
-            tmp[(std::size_t)idx] = Empty;    // xoá khỏi bàn
+            ++extraWhiteCap;                  
+            
+            tmp[(std::size_t)idx] = Empty;    
+            
+
         }
         else if (v == White)
         {
-            ++extraBlackCap;                  // quân trắng chết → đen ăn
+            ++extraBlackCap;                  
             tmp[(std::size_t)idx] = Empty;
         }
     }
 
-    // Tính điểm trên bàn đã gỡ quân chết
+  
     JapaneseScore s = computeJapaneseScoreImpl(tmp, extraBlackCap, extraWhiteCap);
 
-    // Commit lại state thật: bàn mới + captured mới
+    
+    
     m_boardCells     = std::move(tmp);
     m_blackCaptured += extraBlackCap;
     m_whiteCaptured += extraWhiteCap;
@@ -605,7 +628,8 @@ GoGame::JapaneseScore GoGame::finalizeScore()
     m_phase    = Phase::Finished;
     m_gameOver = true;
 
-    // Lưu state sau khi chốt điểm
+ 
+    
     saveState();
 
     return s;
@@ -676,7 +700,8 @@ int GoGame::countGroupLiberties(int row, int col) const
 
 
 
-//  MARK DEAD GROUP 
+
+
 GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
 {
     MarkDeadResult res{false, "", 0};
@@ -685,7 +710,7 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
     if (n != 9 && n != 13 && n != 19)
         n = 9;
 
-    // chỉ cho mark sau khi ván đã kết thúc
+  
     if (m_phase != Phase::MarkDead)
     {
         res.message = "You can only mark dead stones in mark-dead phase.";
@@ -714,7 +739,7 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
 
     int opponent = (color == Black ? White : Black);
 
-    // Tìm group chứa (row, col)
+    
     std::vector<int> group;
     int libs = 0;
     getGroupAndLiberties(row, col, color, group, libs, m_boardCells);
@@ -725,7 +750,7 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
         return res;
     }
 
-    // Gỡ toàn bộ group khỏi bàn
+   
     for (int gIdx : group)
     {
         if (gIdx >= 0 && gIdx < n * n)
@@ -737,13 +762,13 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
     int removed = (int)group.size();
     res.removed = removed;
 
-    // Cộng vào captured của đối thủ
+  
     if (color == Black)
-        m_whiteCaptured += removed; // trắng ăn đen
+        m_whiteCaptured += removed;
     else
-        m_blackCaptured += removed; // đen ăn trắng
+        m_blackCaptured += removed; 
 
-    // Cập nhật prev board cho đồng bộ 
+    
     m_prevBoardCells = m_boardCells;
     m_hasPrevBoard   = true;
 
@@ -752,7 +777,8 @@ GoGame::MarkDeadResult GoGame::markDeadGroup(int row, int col)
         ? "Removed " + std::to_string(removed) + " black stone(s)."
         : "Removed " + std::to_string(removed) + " white stone(s).");
 
-    // Lưu state sau khi gỡ group
+    
+
     saveState();
     return res;
 
@@ -802,7 +828,7 @@ void GoGame::saveState()
     st.prevBoardCells   = m_prevBoardCells;
     st.deadMarks        = m_deadMarks;
 
-    // nếu undo xong rồi đánh nước mới → xoá tương lai
+    
     if (m_historyIndex + 1 < (int)m_history.size())
         m_history.erase(m_history.begin() + m_historyIndex + 1, m_history.end());
 

@@ -1,12 +1,11 @@
 #pragma once
+#include "Screen.h"
 
 #include <SFML/Graphics.hpp>
-#include <functional>
 #include <memory>
 #include <string>
-#include <vector>
+#include <utility>
 
-#include "Screen.h"
 #include "widgets/Button.h"
 #include "GameLogic.h"
 #include "AI.h"
@@ -18,75 +17,85 @@ public:
 
     explicit GameScreen(NavigateFn onNavigate);
 
+    void setBoardSize(int size);
+    void setCurrentPlayer(int player);
+
     void handleEvent(const sf::Event& e) override;
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
 
+private:
     void layout(const sf::Vector2u& winSize);
 
-    
-    void setBoardSize(int size);// 9, 13, 19
-    void setCurrentPlayer(int player); // 0 = Black, 1 = White
-
-private:
-    
-
-    
-    void handleBoardClick(int mouseX, int mouseY);
     void updateTurnText();
     void updateTurnPanel();
     void updateScoreTexts();
 
+    void handleBoardClick(int mouseX, int mouseY);
 
-   
+    
+    void loadBoardTheme();
+    void applyBoardThemeToRect();
+
+    
+    void loadStoneTheme();
+    void applyStoneTheme(); 
+
+    
+    void updateScorePreview();
 
 private:
     NavigateFn navigate;
 
+    GoGame game;
+
+    GoAI ai;
+    bool vsAI;
+    int  aiPlayerIndex;
+    bool pendingAIMove;
+    float aiThinkTimer;
+
     sf::Font font;
 
-    sf::Texture                 bgTexture;
+    sf::Texture bgTexture;
     std::unique_ptr<sf::Sprite> bgSprite;
 
-    sf::Text titleText;      
+    sf::Text titleText;
     sf::Text boardSizeText;
     sf::Text turnText;
     sf::Text blackScoreText;
     sf::Text whiteScoreText;
-    sf::Text statusText;// "Saved!" / "Illegal move" / "Ko rule" / end game
+    sf::Text statusText;
 
-    // Bảng "Black Go! / White Go!"
     sf::RectangleShape turnPanelRect;
     sf::Text           turnPanelText;
 
-    // Buttons
-    Button btnPass;// Pass
-    Button btnSave;// Save game
-    Button btnBackMenu;// quay về Menu
-
-    Button btnFinishGame; //  nút Mark Dead
+    Button btnPass;
+    Button btnSave;
+    Button btnBackMenu;
+    Button btnFinishGame;
     Button btnUndo;
     Button btnRedo;
- 
-    sf::RectangleShape boardRect;// nền + khung bàn cờ
-    sf::Vector2f boardOrigin;// góc trên trái vùng lưới (tọa độ line đầu tiên)
-    float boardPixelSize;// kích thước vùng lưới (vuông) = (N-1)*cellSize
-    float cellSize;// khoảng cách giữa 2 đường lưới
+
+    sf::RectangleShape boardRect;
 
     
+    std::string boardTheme;
+    sf::Texture boardSkinTexture;
+    bool boardSkinLoaded;
 
-    bool  layoutDone;
-    float statusTimer;// để hiển thị status tạm thời (Saved!, Illegal move,...)
+    
+    std::string stoneTheme;                 
+    sf::Texture stoneBlackTexture;
+    sf::Texture stoneWhiteTexture;
+    bool stoneSkinLoaded;
 
-    // Logic thuần cờ vây
-    GoGame game;
-    bool vsAI = false;
-    int aiColor = 1; // giả sử 1 = White
-    int       aiPlayerIndex;
-    GoAI ai;
-    bool pendingAIMove;      // true = vừa tới lượt AI, chờ AI đánh
-    float aiThinkTimer;      // thời gian chờ trước khi AI đánh
+    
+    sf::Vector2f boardOrigin;
+    float boardPixelSize;
+    float cellSize;
+    bool layoutDone;
 
-    int selectedMode = 0; // 0 = 2P, 1..3 = AI
-    void updateScorePreview();
+    
+    float statusTimer;
 };

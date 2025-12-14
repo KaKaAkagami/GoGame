@@ -30,22 +30,22 @@ private:
 
     sf::Font font;
 
-    // Labels
+   
     sf::Text labelBoard;
     sf::Text labelMode;
 
-    // Board size options: 9x9, 13x13, 19x19
+    
     std::vector<Button> boardButtons;
 
-    // Game mode buttons
-    Button btn2P;// 2 Players Mode
-    Button btnEasy;// Easy AI
-    Button btnMedium;// Medium AI
-    Button btnHard;// Hard AI
+   
+    Button btn2P;
+    Button btnEasy;
+    Button btnMedium;
+    Button btnHard;
 
-    Button btnStart;// Start the game
+    Button btnStart;
 
-    // Return
+  
     Button btnReturn;
 
     bool layoutDone;
@@ -53,6 +53,6 @@ private:
     int selectedBoard;  
     int selectedMode;   
 
-    std::vector<sf::Vector2f> boardBtnPositions;// size = 3
-    std::array<sf::Vector2f, 4> modeBtnPositions;// 0:2P,1:Easy,2:Medium,3:Hard
+    std::vector<sf::Vector2f> boardBtnPositions;
+    std::array<sf::Vector2f, 4> modeBtnPositions;
 };

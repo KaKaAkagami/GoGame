@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
-#include <memory>
-#include <string>
 #include <vector>
+#include <string>
+#include <memory>
 
 #include "Screen.h"
 #include "widgets/Button.h"
@@ -12,32 +12,84 @@
 class SettingsScreen : public Screen
 {
 public:
-    using NavigateFn    = std::function<void(const std::string&)>;
-    using ToggleMusicFn = std::function<void()>;   
+    using NavigateFn  = std::function<void(const std::string&)>;
+    using SetVolumeFn = std::function<void(float)>;
+    using GetVolumeFn = std::function<float(void)>;
 
     explicit SettingsScreen(NavigateFn onNavigate,
-                            ToggleMusicFn onToggleMusic);
+                            SetVolumeFn onSetVolume,
+                            GetVolumeFn onGetVolume);
 
     void handleEvent(const sf::Event& e) override;
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
 
-    // Hàm riêng để bố trí lại layout khi cửa sổ đổi size
+private:
     void layout(const sf::Vector2u& winSize);
 
+    
+    void loadSettings();
+    void saveSettings() const;
+
+    
+    float volumeFromMouseX(float mx) const;
+    void  updateKnobFromVolume(float v);
+    void  updateVolumeText(float v);
+
+   
+    void setBoardTheme(const std::string& theme);
+
+   
+    void setStoneTheme(const std::string& theme);
+
 private:
-    NavigateFn navigate;
-    ToggleMusicFn toggleMusic;   
+    
+    NavigateFn  navigate;
+    SetVolumeFn setVolume;
+    GetVolumeFn getVolume;
 
-    // Background
-    sf::Texture                         bgTexture;
-    std::unique_ptr<sf::Sprite>         bgSprite;  
+    sf::Texture bgTexture;
+    std::unique_ptr<sf::Sprite> bgSprite;
 
-    // UI
     sf::Font font;
-    sf::Text title;
-    Button btnReturn;
-    std::vector<Button>options;
 
-    bool layoutDone;
+    sf::RectangleShape bgmTagRect;
+    sf::Text           bgmTagText;
+
+    sf::RectangleShape sliderTrack;
+    sf::CircleShape    sliderKnob;
+    sf::Text           bgmValueText;
+
+    bool  draggingSlider;
+    float currentVolume;
+
+    sf::RectangleShape editTabRect;
+    sf::Text           editTabText;
+
+    Button btnDarkBlue;
+    Button btnDefault;
+    Button btnMyth;
+    Button btnPirate;
+
+    sf::RectangleShape previewBoardRect;
+    sf::Texture        previewTex;
+    bool               previewHasTexture;
+    std::string        boardTheme;
+
+    sf::RectangleShape editStoneTabRect;
+    sf::Text           editStoneTabText;
+
+    Button btnStoneWeapon;
+    Button btnStonePirate;
+    Button btnStoneDefault;
+
+    sf::RectangleShape stonePreviewRect;
+    sf::Texture        stoneBlackTex;
+    sf::Texture        stoneWhiteTex;
+    bool               stonePreviewLoaded;
+    std::string        stoneTheme;
+
+    
+    Button btnReturn;
+    bool   layoutDone;
 };

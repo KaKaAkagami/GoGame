@@ -9,7 +9,8 @@ namespace
     constexpr const char* FONT_UI_PATH  = "assets/fonts/Inter_28pt-SemiBold.ttf";
     constexpr const char* BG_IMAGE_PATH = "assets/img/menu_bg.jpg";
 
-    // file tạm để truyền lựa chọn sang GameScreen
+  
+    
     constexpr const char* PREGAME_CONFIG_PATH = "pregame_tmp.txt";
 
     void centerOrigin(sf::Text& t)
@@ -19,7 +20,8 @@ namespace
         float cy = b.position.y + b.size.y * 0.5f;
         t.setOrigin(sf::Vector2f{cx, cy});
     }
-} // namespace
+} 
+
 
 PreGameScreen::PreGameScreen(NavigateFn onNavigate)
     : navigate(std::move(onNavigate))
@@ -41,11 +43,12 @@ PreGameScreen::PreGameScreen(NavigateFn onNavigate)
     , boardBtnPositions(3)
     , modeBtnPositions{}
 {
-    // Font
+  
+    
     if (!font.openFromFile(FONT_UI_PATH))
         std::cerr << "[PreGameScreen] Failed to load font\n";
 
-    // Background
+        
     if (!bgTexture.loadFromFile(BG_IMAGE_PATH))
         std::cerr << "[PreGameScreen] Failed to load background\n";
     else
@@ -54,19 +57,21 @@ PreGameScreen::PreGameScreen(NavigateFn onNavigate)
         bgSprite = std::make_unique<sf::Sprite>(bgTexture);
     }
 
-    // Labels
+ 
+
+
     labelBoard.setString("Select board size:");
     labelBoard.setFillColor(sf::Color::Black);
 
     labelMode.setString("Select game mode:");
     labelMode.setFillColor(sf::Color::Black);
 
-    // Board size buttons
+
     boardButtons.emplace_back(font, "9 x 9", 28U);
     boardButtons.emplace_back(font, "13 x 13", 28U);
     boardButtons.emplace_back(font, "19 x 19", 28U);
 
-    // 0 = 9x9, 1 = 13x13, 2 = 19x19
+
     boardButtons[0].setOnClick([this]()
     {
         selectedBoard = 0;
@@ -105,7 +110,7 @@ PreGameScreen::PreGameScreen(NavigateFn onNavigate)
         std::cout << "[PreGameScreen] Mode: Hard AI\n";
     });
 
-    // Start game
+
     btnStart.setOnClick([this]()
     {
         if (selectedBoard == -1 || selectedMode == -1)
@@ -125,7 +130,7 @@ PreGameScreen::PreGameScreen(NavigateFn onNavigate)
         std::ofstream out(PREGAME_CONFIG_PATH);
         if (out)
         {
-            // Format: boardSize selectedMode
+
             out << boardSize << " " << selectedMode << "\n";
             std::cout << "[PreGameScreen] Wrote config: boardSize="
                       << boardSize << ", mode=" << selectedMode << "\n";
@@ -140,7 +145,7 @@ PreGameScreen::PreGameScreen(NavigateFn onNavigate)
             navigate("Game");
     });
 
-    // Return về Menu
+
     btnReturn.setOnClick([this]()
     {
         if (navigate) navigate("Menu");
@@ -152,7 +157,7 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
     float winW = static_cast<float>(winSize.x);
     float winH = static_cast<float>(winSize.y);
 
-    // Background full màn
+
     if (bgSprite)
     {
         auto tex = bgTexture.getSize();
@@ -165,10 +170,10 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
     const float leftX = winW * 0.25f;
     const float topY  = winH * 0.20f;
 
-    // Label 1
+
     labelBoard.setPosition(sf::Vector2f{leftX, topY});
 
-    //3 nút board size trên 1 hàng
+
     const float centerY = topY + 90.f;
 
     Button& baseBtn = boardButtons[2];
@@ -188,11 +193,10 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
         boardBtnPositions[i] = sf::Vector2f{x, centerY};
     }
 
-    //Label 2
+    
     float label2Y = centerY + baseH + 80.f;
     labelMode.setPosition(sf::Vector2f{leftX, label2Y});
 
-    //4 nút game mode
     float maxTextW = btn2P.textWidth();
     maxTextW = std::max(maxTextW, btnEasy.textWidth());
     maxTextW = std::max(maxTextW, btnMedium.textWidth());
@@ -221,7 +225,6 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
     btnMedium.setPosition(modeBtnPositions[2]);
     btnHard.setPosition(modeBtnPositions[3]);
 
-    //Nút Start
     const float startBtnY = gmY + gmH + 70.f;
 
     btnStart.setSize(sf::Vector2f{gmW, gmH});
@@ -230,7 +233,6 @@ void PreGameScreen::layout(const sf::Vector2u& winSize)
         startBtnY
     });
 
-    //Nút Return
     const float margin   = 16.f;
     const float paddingX = 48.f;
     const float paddingY = 18.f;
@@ -277,10 +279,10 @@ void PreGameScreen::draw(sf::RenderWindow& window)
     if (bgSprite)
         window.draw(*bgSprite);
 
-    // Label board size
+    
     window.draw(labelBoard);
 
-    // Highlight board size
+    
     if (selectedBoard >= 0 && selectedBoard < static_cast<int>(boardButtons.size()))
     {
         sf::RectangleShape rect;
@@ -298,10 +300,10 @@ void PreGameScreen::draw(sf::RenderWindow& window)
     for (auto& b : boardButtons)
         b.draw(window);
 
-    // Label game mode
+    
     window.draw(labelMode);
 
-    // Highlight game mode
+    
     if (selectedMode >= 0 && selectedMode < 4)
     {
         sf::RectangleShape rect;

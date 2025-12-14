@@ -25,11 +25,11 @@ public:
 private:
     NavigateFn navigate;
 
-    // Background
+    
     sf::Texture bgTexture;
     std::unique_ptr<sf::Sprite>bgSprite;   
 
-    // UI
+    
     sf::Font fontUI;
     sf::Font fontTitle;
     sf::Text title;

@@ -7,15 +7,15 @@ Button::Button(const sf::Font& font, const std::string& text, unsigned int size)
     , label(font, text, size)   
     , onClick(nullptr)
 {
-    // màu chữ trắng
+
     label.setFillColor(sf::Color::White);
 
-    // style ô
+
     background.setFillColor(sf::Color(30, 30, 30));
     background.setOutlineColor(sf::Color::White);
     background.setOutlineThickness(2.f);
 
-    // padding quanh chữ
+
     const float paddingX = 32.f;
     const float paddingY = 14.f;
 
@@ -32,7 +32,7 @@ Button::Button(const sf::Font& font, const std::string& text, unsigned int size)
     updateLabelTransform();
 }
 
-// geometry
+
 void Button::setSize(const sf::Vector2f& size)
 {
     background.setSize(size);
@@ -61,19 +61,19 @@ float Button::textWidth() const
     return b.size.x;
 }
 
-// callback
+
 void Button::setOnClick(ClickCallback cb)
 {
     onClick = std::move(cb);
 }
 
-// hit test
+
 bool Button::contains(const sf::Vector2f& p) const
 {
     return background.getGlobalBounds().contains(p);
 }
 
-// event
+
 void Button::handleEvent(const sf::Event& e)
 {
     if (!onClick)
@@ -94,14 +94,15 @@ void Button::handleEvent(const sf::Event& e)
     }
 }
 
-// draw
+
+
 void Button::draw(sf::RenderTarget& target) const
 {
     target.draw(background);
     target.draw(label);
 }
 
-// private: căn giữa label trong ô
+
 void Button::updateLabelTransform()
 {
     const sf::Vector2f size = background.getSize();
