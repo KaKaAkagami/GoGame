@@ -34,13 +34,26 @@ Go/
 | |──c_cpp_properties.json
 | |──launch.json
 | |──settings.json
+| |──tasks.json
 |
 |──assets/
 | |──fonts/
 | | |──FZShuTi.ttf
 | | |──Inter_28pt-SemiBold.ttf
 | |──img/
+| | |──stone/
+| | | |──Pirate/
+| | | | |──Pirate_black.png
+| | | | |──Pirate_white.png
+| | | |
+| | | |──Weapon/
+| | | | |──Weapon_black.png
+| | | | |──Weapon_white.png
+| | | |
 | | |──menu_bg.jpg
+| | |──Myth.jpg
+| | |──Pirate.jpg
+| | | 
 | |──sfx/
 | | |──bg_music.ogg
 |
@@ -50,10 +63,16 @@ Go/
 | | |──MenuScreen.h
 | | |──PreGameScreen.h
 | | |──SettingsScreen.h
+| |
 | |──widgets/
 | | |──Button.h
 | | |──IconButton.h
+| |──AI.h
 | |──App.h
+| |──BoardTheme.h
+| |──Config.h
+| |──ConfigManager.h
+| |──GameLogic.h
 | |──Screen.h
 | |──ScreenManager.h
 | 
@@ -66,33 +85,41 @@ Go/
 | |widgets/
 | | |──Button.cpp
 | | |──IconButton.cpp
+| |──AI.cpp
 | |──App.cpp
+| |──ConfigManager.cpp
+| |──GameLogic.cpp
 | |──main.cpp
 | |──ScreenManager.cpp
 | 
 |GoGame.exe
 |
 |README.md
+|
+|save_ai.txt
 | 
 |savegame.txt
+|
+|settings.cfg
 ```
 
 ## 3. How to play
 
 ### Menu
 - Play  
-- Continue game (load saved game)
-- Settings (music toggle - available, changing stones's style, boards's style)
+- Continue game (load saved game both AI or PvP and the last saved skin)
+- Settings (music toggle, changing stones's style, boards's style)
 - Exit 
 
 ### Pre-game Selection
 - Choose board size (9/13/19)
-- Choose game mode (2P - available, Easy AI, Medium AI, Hard AI)
+- Choose game mode (2P , Easy AI, Medium AI, Hard AI)
 - Start the game
 
 ### Ingame
 - Click intersections to place stones
-- Pass (skip a turn)
+- Pass (skip a turn), if both players passed, change to mark-dead mode to discuss what stones are dead and remove them + change the point
+- Finish and score. After mark-dead mode, finish the game and calculate score.
 - Save game (storing progress)
 - Back to menu
 
@@ -116,3 +143,5 @@ g++ -std=c++17 -Iinclude src/main.cpp src/App.cpp src/ScreenManager.cpp src/widg
 
 Demo video:
 https://drive.google.com/file/d/1mbQ4Ace68Z3dHjK_28rAxmB2zIoa-zhr/view?usp=sharing
+(This is the last video, we have a new one for the newest update)
+https://drive.google.com/drive/folders/1nUomDgRLmoa58Wd63UZW14alhYXzWohX?usp=sharing
