@@ -136,7 +136,18 @@ Winner = who has the highest score
 - g++ (MSYS2 UCRT64)
 
 ### Build (We build in terminal's UCRT64)
-g++ -std=c++17 -I include src/main.cpp src/App.cpp src/ScreenManager.cpp src/ConfigManager.cpp src/GameLogic.cpp src/AI.cpp src/widgets/Button.cpp src/widgets/IconButton.cpp src/screens/MenuScreen.cpp src/screens/PreGameScreen.cpp src/screens/SettingsScreen.cpp src/screens/GameScreen.cpp -o GoGame.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+g++ -std=c++17 -Iinclude \
+  src/main.cpp src/App.cpp src/ScreenManager.cpp \
+  src/ConfigManager.cpp \
+  src/GameLogic.cpp \
+  src/AI.cpp \
+  src/widgets/Button.cpp src/widgets/IconButton.cpp \
+  src/screens/MenuScreen.cpp src/screens/SettingsScreen.cpp \
+  src/screens/PreGameScreen.cpp src/screens/GameScreen.cpp \
+  -o GoGame.exe \
+  -LC:/msys64/ucrt64/lib -IC:/msys64/ucrt64/include \
+  -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
 
 ### Run
 ./GoGame.exe
